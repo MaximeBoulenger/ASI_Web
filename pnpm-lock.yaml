@@ -21,7 +21,7 @@ importers:
         specifier: ^1.13.1
         version: 1.13.1
       sweetalert2:
-        specifier: ^11.14.1
+        specifier: ^11.26.3
         version: 11.26.3
       vue:
         specifier: ^3.4.21

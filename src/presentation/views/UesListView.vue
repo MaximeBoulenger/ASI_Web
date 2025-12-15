@@ -4,49 +4,19 @@ import { BootstrapButtonEnum } from '@/types/BootstrapButtonEnum';
 import CustomButton from '@/presentation/components/forms/components/CustomButton.vue';
 import ParcoursForm from '@/presentation/components/forms/ParcoursForm.vue';
 import CustomTable from '../components/tables/CustomTable.vue';
-import { Parcours } from '@/domain/entities/Parcours';
+import { Parcours } from '@/domain/entities/Ues';
 import { ParcoursDAO } from '@/domain/daos/ParcoursDAO'; 
-import Swal from 'sweetalert2';
 
-const parcoursForm = ref<typeof ParcoursForm | null>(null); 
-const parcours = ref<Parcours[]>([]); 
+const uesForm = ref<typeof Uesorm | null>(null); 
+const ues = ref<Ues[]>([]); 
 
-const formatterEdition = (parcours: Parcours) => {
+const formatterEdition = (ues: Ues) => {
     return '<i class="bi bi-pen-fill text-primary"></i>';
 };
 
-const formatterSuppression = (parcours: Parcours) => {
+const formatterSuppression = (ues: Ues) => {
     return '<i class="bi bi-trash-fill text-danger"></i>';
 };
-
-const onParcoursCreated = (newParcours: Parcours) => {
-    parcours.value.unshift(newParcours);
-}; 
-
-const onDeleteParcours = (p: Parcours) => {
-    
-    Swal.fire({
-        
-        title: 'Êtes-vous sûr de vouloir supprimer ce parcours ?',
-        
-        showCancelButton: true,
-        
-        confirmButtonText: 'Supprimer',
-        
-        cancelButtonText: 'Annuler',
-        
-    }).then((result) => {
-        
-        if (result.isConfirmed) {
-            
-            ParcoursDAO.getInstance().delete(p.ID!).then(() => {
-                parcours.value = parcours.value.filter((parcours) => parcours.ID !== p.ID);
-            }).catch(() => {
-                alert('Une erreur est survenue lors de la suppression du parcours');
-            });
-        }
-    })
-}
 
 const columns = [   
 { field: 'EditionParcours', label: 'Edition', formatter: formatterEdition, onClick: (p: Parcours) => parcoursForm.value?.openForm(p), style: 'width: 32px;text-align:center;' },
@@ -56,11 +26,9 @@ const columns = [
 { field: 'DeleteParcours', label: 'Suppression', formatter: formatterSuppression, onClick: () => { }, style: 'width: 32px;text-align:center;' },
 ]; 
 
-const emit = defineEmits(['create:parcours', 'update:parcours']); 
-
 onMounted(() => {
     ParcoursDAO.getInstance().list().then((data) => {
-        parcours.value = data;
+        ues.value = data;
     });
 }); 
 </script>
@@ -82,7 +50,7 @@ onMounted(() => {
             </div>
         </div>
     </div>
-    <ParcoursForm ref="parcoursForm" @create:parcours="onParcoursCreated" />
+    <ParcoursForm ref="parcoursForm" :parcours="null" />
 </template>
 
 <style scoped>
