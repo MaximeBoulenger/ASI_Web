@@ -1,50 +1,59 @@
+import axios from 'axios';
 import type { Parcours } from '../entities/Parcours';
 import type { IDAO } from './IDAO';
-import axios from 'axios'; 
 
 export class ParcoursDAO implements IDAO<Parcours> {
     private static instance: ParcoursDAO;
-    
+    // Use relative URL so MSW intercepts in dev and the app hits the current origin in prod
+    private readonly baseUrl = '/api/Parcours';
+
     private constructor() {}
-    
+
     public static getInstance(): ParcoursDAO {
         if (!ParcoursDAO.instance) {
             ParcoursDAO.instance = new ParcoursDAO();
         }
         return ParcoursDAO.instance;
     }
-    
+
     public async create(data: Parcours): Promise<Parcours> {
         try {
-            const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/Parcours`, data);
+            const response = await axios.post(this.baseUrl, data);
             return response.data;
         } catch (error) {
-            throw new Error('Impossible de créer le nouveau parcours');
+            throw new Error('Impossible de creer le nouveau parcours');
         }
     }
-    
+
     public async get(id: number): Promise<Parcours> {
         try {
-            const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/Parcours/${id}`);
+            const response = await axios.get(`${this.baseUrl}/${id}`);
             return response.data as Parcours;
         } catch (error) {
-            throw new Error('Impossible de récupérer le parcours');
+            throw new Error('Impossible de recuperer le parcours');
         }
     }
-    
+
     public async update(id: number, data: Parcours): Promise<Parcours> {
-        // Update a Parcours document in the database
-        return data;
+        try {
+            const response = await axios.put(`${this.baseUrl}/${id}`, data);
+            return response.data as Parcours;
+        } catch (error) {
+            throw new Error('Impossible de mettre a jour le parcours');
+        }
     }
-    
+
     public async delete(id: number): Promise<void> {
-        // Delete a Parcours document from the database
+        try {
+            await axios.delete(`${this.baseUrl}/${id}`);
+        } catch (error) {
+            throw new Error('Impossible de supprimer le parcours');
+        }
     }
-    
+
     public async list(): Promise<Parcours[]> {
         try {
-            // const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/Parcours`);
-            const response = await axios.get(`/dataTest.json`);
+            const response = await axios.get(this.baseUrl);
             return response.data as Parcours[];
         } catch (error) {
             throw new Error('Impossible de lister les parcours');
