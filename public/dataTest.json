@@ -1,4 +1,4 @@
 [
-    { "ID": 1, "NomParcours": "Finance", "AnneeFormation": 2024 },
-    { "ID": 2, "NomParcours": "Informatique", "AnneeFormation": 2025 }
+  { "ID": 1, "NomParcours": "Finance", "AnneeFormation": 2024 },
+  { "ID": 2, "NomParcours": "Informatique", "AnneeFormation": 2025 }
 ]

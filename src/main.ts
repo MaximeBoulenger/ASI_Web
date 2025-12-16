@@ -8,15 +8,18 @@ import App from './App.vue';
 import router from './router';
 import vSelect from 'vue-select';
 
-if (import.meta.env.DEV) {
-  const { worker } = await import('./mocks/browser');
-  await worker.start({
-    onUnhandledRequest: 'bypass',
-  });
+async function bootstrap() {
+  // Start the MSW worker in development so DAO calls are intercepted locally.
+  if (import.meta.env.DEV) {
+    const { worker } = await import('./mocks/browser');
+    await worker.start({ onUnhandledRequest: 'bypass' });
+  }
+
+  const app = createApp(App).component('v-select', vSelect);
+
+  app.use(router);
+
+  app.mount('#app');
 }
 
-const app = createApp(App).component('v-select', vSelect);
-
-app.use(router);
-
-app.mount('#app');
+bootstrap();
