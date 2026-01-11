@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onBeforeMount, defineExpose, defineProps, watch } from 'vue';
+import { ref, onBeforeMount, defineExpose, defineProps, toRaw, watch } from 'vue';
 import { BootstrapButtonEnum } from '@/types/BootstrapButtonEnum';
 import { UE } from '@/domain/entities/UE';
 import CustomInput from '@/presentation/components/forms/components/CustomInput.vue';
@@ -31,7 +31,7 @@ const openForm = (ue: UE | null = null) => {
   isOpen.value = true;
 
   if (ue) {
-    currentUe.value = ue;
+    currentUe.value = structuredClone(toRaw(ue));
   }
 };
 
@@ -39,6 +39,11 @@ const closeForm = () => {
   isOpen.value = false;
 
   currentUe.value = new UE(null, null, null, null);
+  formErrors.value = {
+    NumeroUe: null,
+    Intitule: null,
+    parcours: null
+  };
 };
 
 const saveUE = () => {
@@ -47,7 +52,16 @@ const saveUE = () => {
   }
 
   if (currentUe.value.ID) {
-    // Mise à jour d'une UE
+    UEDAO.getInstance()
+      .update(currentUe.value.ID, currentUe.value)
+      .then((updated) => {
+        alert('UE mise a jour avec succes');
+        emit('update:ue', updated);
+        closeForm();
+      })
+      .catch((ex) => {
+        alert(ex.message);
+      });
   } else {
     UEDAO.getInstance()
       .create(currentUe.value)
@@ -78,7 +92,7 @@ const emit = defineEmits(['create:ue', 'update:ue']);
 
 onBeforeMount(() => {
   if (props.ue) {
-    currentUe.value = props.ue;
+    currentUe.value = structuredClone(toRaw(props.ue));
   }
 
   // Chargement de la liste des parcours
@@ -100,9 +114,7 @@ watch(
   () => props.ue,
   (newUE) => {
     if (newUE) {
-      currentUe.value = newUE;
-
-      openForm();
+      openForm(newUE);
     }
   }
 );

@@ -141,6 +141,7 @@ defineExpose({
             libelle="Année"
             type="number"
             placeholder="Année de formation"
+            :error="formErrors.AnneeFormation"
           />
         </form>
       </div>

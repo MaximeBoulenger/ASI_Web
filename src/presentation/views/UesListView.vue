@@ -49,8 +49,8 @@
             style: 'width: 32px;text-align:center;'
         },
         { field: 'ID', label: 'ID', formatter: null, onClick: null, style: null },
-        { field: 'NumeroUEs', label: 'Numero', formatter: null, onClick: null, style: null },
-        { field: 'NomUEs', label: 'Intitule', formatter: null, onClick: null, style: null },
+        { field: 'NumeroUe', label: 'Numero', formatter: null, onClick: null, style: null },
+        { field: 'Intitule', label: 'Intitule', formatter: null, onClick: null, style: null },
         {
             field: 'DeleteUE',
             label: 'Suppression',
