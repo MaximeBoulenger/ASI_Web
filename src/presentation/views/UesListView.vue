@@ -82,11 +82,11 @@
                 </div>
                 
                 <div class="card-body">
+                    <UEForm ref="ueForm" @create:ue="onUECreated" @update:ue="onUEUpdated" />
                     <CustomTable idAttribute="ID" :columns="columns" :data="ues" />
                 </div>
             </div>
         </div>
-        <UEForm ref="ueForm" @create:ue="onUECreated" @update:ue="onUEUpdated" />
     </template>
     
     <style scoped>
