@@ -7,6 +7,7 @@ import CustomTable from '../components/tables/CustomTable.vue';
 import { Parcours } from '@/domain/entities/Parcours';
 import { ParcoursDAO } from '@/domain/daos/ParcoursDAO';
 import Swal from 'sweetalert2';
+import { toastError, toastSuccess } from '@/presentation/utils/toast';
 
 const parcoursForm = ref<InstanceType<typeof ParcoursForm> | null>(null);
 const parcours = ref<Parcours[]>([]);
@@ -41,9 +42,10 @@ const onDeleteParcours = (p: Parcours) => {
         .delete(p.ID!)
         .then(() => {
           parcours.value = parcours.value.filter((parcoursItem) => parcoursItem.ID !== p.ID);
+          toastSuccess('Parcours supprimé avec succès');
         })
         .catch(() => {
-          alert('Une erreur est survenue lors de la suppression du parcours');
+          toastError('Une erreur est survenue lors de la suppression du parcours');
         });
     }
   });

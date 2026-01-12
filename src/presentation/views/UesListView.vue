@@ -7,6 +7,7 @@
     import UEForm from '@/presentation/components/forms/UEForm.vue';
     import { UE } from '@/domain/entities/UE';
     import { UEDAO } from '@/domain/daos/UEDAO';
+    import { toastError, toastSuccess } from '@/presentation/utils/toast';
     
     const ueForm = ref<InstanceType<typeof UEForm> | null>(null);
         const ues = ref<UE[]>([]);
@@ -34,8 +35,11 @@
                     .delete(ue.ID!)
                     .then(() => {
                         ues.value = ues.value.filter((item) => item.ID !== ue.ID);
+                        toastSuccess('UE supprimée avec succès');
                     })
-                    .catch(() => alert('Une erreur est survenue lors de la suppression de l UE'));
+                    .catch(() =>
+                    toastError('Une erreur est survenue lors de la suppression de l\'UE')
+                    );
                 }
             });
         };
@@ -101,4 +105,3 @@
             margin-bottom: 0 !important;
         }
     </style>
-    

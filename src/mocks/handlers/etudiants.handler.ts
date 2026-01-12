@@ -2,8 +2,8 @@ import { http, HttpResponse } from 'msw';
 import type { Etudiant } from '@/domain/entities/Etudiant';
 
 const initialEtudiants: Etudiant[] = [
-  { ID: 1, Nom: 'Dupont', Prenom: 'Marie', Parcours: 1 },
-  { ID: 2, Nom: 'Martin', Prenom: 'Lucas', Parcours: 2 }
+  { ID: 1, Nom: 'Dupont', Prenom: 'Marie', Email: 'marie.dupont@example.com', Parcours: 1 },
+  { ID: 2, Nom: 'Martin', Prenom: 'Lucas', Email: 'lucas.martin@example.com', Parcours: 2 }
 ];
 
 let etudiantsStore = [...initialEtudiants];
